@@ -6,7 +6,7 @@ import { getFromStorage, setInStorage } from "../../helpers/storage.helper";
 import { SharedCard } from "../../shared/components/SharedCard";
 import { RECEPIES_API } from "../constants/api-constants";
 
-function Slider({ category }) {
+function Slider({ category, type }) {
   const [slider, setSlider] = useState([]);
   const mainRef = useRef();
   const thumbsRef = useRef();
@@ -18,10 +18,13 @@ function Slider({ category }) {
       if (cachedRecipes) {
         setSlider(JSON.parse(cachedRecipes));
       } else {
-        const api = await fetch(RECEPIES_API[category]);
+        const api = await fetch(
+          type ? `${RECEPIES_API[category]}${type}` : RECEPIES_API[category]
+        );
         const data = await api.json();
-        setSlider(data.recipes);
-        setInStorage(category, JSON.stringify(data.recipes));
+        const dataToSave = data.results ?? data.recipes;
+        setSlider(dataToSave);
+        setInStorage(category, JSON.stringify(dataToSave));
       }
     };
 
@@ -29,7 +32,7 @@ function Slider({ category }) {
     if (mainRef.current && thumbsRef.current) {
       mainRef.current.sync(thumbsRef.current.splide);
     }
-  }, [category]);
+  }, [category, type]);
 
   const renderSlides = () => {
     return slider?.map((recipe) => {
@@ -72,7 +75,7 @@ function Slider({ category }) {
 
   return (
     <Wrapper>
-      <h2>{category.toUpperCase()}</h2>
+      <h2>{type?.toUpperCase() ?? category.toUpperCase()}</h2>
       <Splide options={mainOptions} ref={mainRef}>
         {renderSlides()}
       </Splide>

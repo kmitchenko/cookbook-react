@@ -1,12 +1,17 @@
 import Pages from "./pages/Pages";
-import Header from "./components/core/Header";
+import Header from "./components/core/Header/Header";
+import CategoryNav from './components/core/CategoryNav';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-      <Header />
-      <h1>Cookbook app</h1>
-      <Pages />
+      <BrowserRouter>
+        <Header />
+        <h1>Cookbook app</h1>
+        <CategoryNav/>
+        <Pages />
+      </BrowserRouter>
     </div>
   );
 }

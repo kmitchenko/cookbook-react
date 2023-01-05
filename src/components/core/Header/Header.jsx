@@ -1,5 +1,5 @@
-import Navbar from "./Navbar";
-import Search from "../features/search/components/Search";
+import Navbar from "../Navbar";
+import Search from "../../features/search/components/Search";
 import "./header.scss";
 
 function Header() {
